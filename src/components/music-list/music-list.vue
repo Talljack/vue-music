@@ -6,7 +6,7 @@
     <h1 class="title" v-html="title"></h1>
     <div class="bg-image" :style="bgStyle" ref="bgImage">
       <div class="play-wrapper">
-        <div class="play" v-show="songs.length > 0" ref="play">
+        <div class="play" v-show="songs.length > 0" ref="play" @click="random">
           <i class="icon-play"></i>
           <span class="text">播放全部</span>
         </div>
@@ -22,7 +22,7 @@
       @scroll="scroll"
     >
       <div class="song-list-wrapper">
-        <song-list :songs='songs'></song-list>
+        <song-list :rank='rank' @select="selectItem" :songs='songs'></song-list>
       </div>
       <div class="loading-container" v-show="!songs.length">
         <loading></loading>
@@ -36,10 +36,14 @@ import Scroll from 'base/scroll/scroll'
 import SongList from 'base/song-list/song-list'
 import {prefixStyle} from 'common/js/dom'
 import Loading from 'base/loading/loading'
+import { mapActions } from 'vuex'
+import {playlistMixin} from 'common/js/mixin'
+
 const transform = prefixStyle('transform')
 const backdrop = prefixStyle('backdrop-filter')
 const RESERVED_HEIGHT = 40
 export default {
+  mixins: [playlistMixin],
   name: 'MusicList',
   components: {
     Scroll,
@@ -60,6 +64,10 @@ export default {
     title: {
       type: String,
       default: ''
+    },
+    rank: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -72,6 +80,27 @@ export default {
     this.listenScroll = true
   },
   methods: {
+    handlePlayList(playList) {
+      const bottom = playList.length > 0 ? '60px' : ''
+      this.$refs.list.$el.style.bottom = bottom
+      this.$refs.list.refresh()
+    },
+    selectItem(item, index) {
+      // 需要将playlist. playing(true). fullscreen(true). sequencelist(list), currentIndex(index)
+      this.selectPlay({
+        list: this.songs,
+        index
+      })
+    },
+    random() {
+      this.randomPlay({
+        list: this.songs
+      })
+    },
+    ...mapActions([
+      'selectPlay',
+      'randomPlay'
+    ]),
     scroll(pos) {
       this.scrollY = pos.y
     },
@@ -208,7 +237,6 @@ export default {
         position: absolute
         width: 100%
         top: 50%
-        left 50%
-        transform: translateY(-50% -50%)
+        transform: translateY(-50%)
 
 </style>

@@ -104,6 +104,9 @@ export default {
     scroll(pos) {
       this.scrollY = pos.y
     },
+    refresh() {
+      this.$refs.listview.refresh()
+    },
     _scrollTo(index) {
       if (!index && index !== 0) {
         return
@@ -229,7 +232,6 @@ export default {
     .loading-container
       position: absolute
       width: 100%
-      left:50%
       top: 50%
-      transform: translate(-50% -50%)
+      transform: translateY(-50%)
 </style>

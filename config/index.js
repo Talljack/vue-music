@@ -6,7 +6,6 @@ const path = require('path')
 
 module.exports = {
   dev: {
-
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
@@ -18,7 +17,50 @@ module.exports = {
           req.headers.host = 'c.y.qq.com';
         },
         pathRewrite: {
-          '^/api/getDiscList': ''
+          '^/api/getDiscList': '',
+        }
+      },
+      '/api/getLyric': {
+        target: 'https://szc.y.qq.com/lyric/fcgi-bin/fcg_query_lyric_new.fcg',
+        bypass: function (req, res, proxyOptions) {
+          req.headers.referer = 'https://c.y.qq.com';
+          req.headers.host = 'c.y.qq.com';
+        },
+        pathRewrite: {
+          '^/api/getLyric': '',
+        }
+      },
+      '/api/music': {
+        target: 'https://u.y.qq.com/cgi-bin/musicu.fcg',
+        bypass: function (req, res, proxyOptions) {
+          req.headers.referer = 'https://y.qq.com/portal/player.html';
+          // req.headers.host = 'u.y.qq.com';
+          req.header.origin = 'https://y.qq.com'
+          // req.headers.userAgent = 'Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1'
+        },
+        pathRewrite: {
+          '^/api/music': '',
+        }
+      },
+      '/api/getSong': {
+        target: 'https://c.y.qq.com/qzone/fcg-bin/fcg_ucc_getcdinfo_byids_cp.fcg',
+        bypass: function (req, res, proxyOptions) {
+          req.headers.referer = 'https://y.qq.com';
+          req.headers.host = 'c.y.qq.com';
+        },
+        pathRewrite: {
+          '^/api/getSong': ''
+        }
+      },
+      
+      '/api/getSearchSong': {
+        target: 'https://c.y.qq.com/soso/fcgi-bin/search_for_qq_cp',
+        bypass: function (req, res, proxyOptions) {
+          req.headers.referer = 'https://y.qq.com';
+          req.headers.host = 'c.y.qq.com';
+        },
+        pathRewrite: {
+          '^/api/getSearchSong': ''
         }
       }
     },

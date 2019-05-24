@@ -19,7 +19,7 @@ export default {
 
 <style lang='stylus' scoped>
   @import '~common/stylus/variable'
-  .laoding
+  .loading
     width 100%
     text-align center
     .desc

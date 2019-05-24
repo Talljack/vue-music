@@ -1,11 +1,13 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Rank from 'components/rank/rank'
-import Recommend from 'components/recommend/recommend'
-import Singer from 'components/singer/singer'
-import Search from 'components/search/search'
-import SingerDetail from 'components/singer-detail/singer-detail'
-
+const Rank = () => import('components/rank/rank')
+const Recommend = () => import('components/recommend/recommend')
+const Singer = () => import('components/singer/singer')
+const Search = () => import('components/search/search')
+const SingerDetail = () => import('components/singer-detail/singer-detail')
+const Disc = () => import('components/disc/disc')
+const TopList = () => import('components/top-list/top-list')
+const UserCenter = () => import('components/user-center/user-center')
 Vue.use(Router)
 
 export default new Router({
@@ -17,12 +19,24 @@ export default new Router({
     {
       path: '/rank',
       name: 'rank',
-      component: Rank
+      component: Rank,
+      children: [
+        {
+          path: ':id',
+          component: TopList
+        }
+      ]
     },
     {
       path: '/recommend',
       name: 'recommend',
-      component: Recommend
+      component: Recommend,
+      children: [
+        {
+          path: ':id',
+          component: Disc
+        }
+      ]
     },
     {
       path: '/singer',
@@ -38,7 +52,18 @@ export default new Router({
     {
       path: '/search',
       name: 'search',
-      component: Search
+      component: Search,
+      children: [
+        {
+          path: ':id',
+          component: SingerDetail
+        }
+      ]
+    },
+    {
+      path: '/user',
+      name: 'user',
+      component: UserCenter
     }
   ]
 })

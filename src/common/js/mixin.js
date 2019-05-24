@@ -4,24 +4,22 @@ import {shuffle} from 'common/js/util'
 
 export const playlistMixin = {
   computed: {
-    ...mapGetters([
-      'playlist'
-    ])
-  },
-  mounted() {
-    this.handlePlaylist(this.playlist)
-  },
-  activated() {
-    this.handlePlaylist(this.playlist)
+    ...mapGetters(['playlist'])
   },
   watch: {
-    playlist(newVal) {
-      this.handlePlaylist(newVal)
+    playlist(newPlayList) {
+      this.handlePlayList(newPlayList)
     }
   },
+  mounted() {
+    this.handlePlayList(this.playlist)
+  },
+  activated () {
+    this.handlePlayList(this.playlist)
+  },
   methods: {
-    handlePlaylist() {
-      throw new Error('component must implement handlePlaylist method')
+    handlePlayList(list) {
+      throw new Error('This component is must implement the handlePlayList method')
     }
   }
 }
@@ -32,7 +30,7 @@ export const playerMixin = {
       return this.mode === playMode.sequence ? 'icon-sequence' : this.mode === playMode.loop ? 'icon-loop' : 'icon-random'
     },
     ...mapGetters([
-      'sequenceList',
+      'sequencelist',
       'playlist',
       'currentSong',
       'mode',
@@ -40,17 +38,17 @@ export const playerMixin = {
     ])
   },
   methods: {
-    changeMode() {
+    modeChange() {
       const mode = (this.mode + 1) % 3
       this.setPlayMode(mode)
       let list = null
       if (mode === playMode.random) {
-        list = shuffle(this.sequenceList)
+        list = shuffle(this.sequencelist)
       } else {
-        list = this.sequenceList
+        list = this.sequencelist
       }
       this.resetCurrentIndex(list)
-      this.setPlaylist(list)
+      this.setPlayList(list)
     },
     resetCurrentIndex(list) {
       let index = list.findIndex((item) => {
@@ -79,7 +77,7 @@ export const playerMixin = {
     },
     ...mapMutations({
       setPlayMode: 'SET_PLAY_MODE',
-      setPlaylist: 'SET_PLAYLIST',
+      setPlayList: 'SET_PLAY_LIST',
       setCurrentIndex: 'SET_CURRENT_INDEX',
       setPlayingState: 'SET_PLAYING_STATE'
     }),
